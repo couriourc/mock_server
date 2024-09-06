@@ -1,0 +1,19 @@
+{
+  "name": "mock_server",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "scripts": {
+    "build": "bun build --compile --target=bun-windows-x64 index.ts --outfile myapp"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.1.1",
+    "@types/node": "^22.5.4",
+    "elysia": "^1.1.12"
+  }
+}

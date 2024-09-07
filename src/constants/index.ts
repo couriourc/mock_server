@@ -1,8 +1,10 @@
 import type {IConfigParameter} from "../types";
+import * as process from "process";
 
 export {default as COLOR_MAPS} from "./colors.ts";
+
 export const DEFAULT_CONFIG: IConfigParameter = {
-    ROOT_DIR: "example",
+    ROOT_DIR: process.env.NODE_ENV === "development" ? "example" : ".",
     API_DIR: 'apis',
     STATIC_DIR: './static/',
     STATIC_ROUTE_PREFIX: 'static',
@@ -13,3 +15,4 @@ export const DEFAULT_CONFIG: IConfigParameter = {
     DEBUG_LOG_FILE_PATH: "./debug.log",
     WATCH: false,
 };
+

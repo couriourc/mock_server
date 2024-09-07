@@ -50,19 +50,14 @@ const resolve = (p?: string) => path.resolve(cwd(config.ROOT_DIR), p ?? '');
 
 // E 相关配置
 // S 打印日志配置
+
 const logger = new Logger({
-    write: !config.SILENT,
     sponsor: !config.SILENT,
     info: !config.SILENT,
     debug: !config.SILENT,
     rotate: {
         size: config.LOG_SIZE,
         encoding: "utf8",
-    },
-    path: {
-        // remember: add string *.log to .gitignore
-        debug_log: resolve(config.DEBUG_LOG_FILE_PATH),
-        error_log: resolve(config.ERROR_LOG_FILE_PATH),
     },
 });
 // 遍历路径信息
@@ -136,14 +131,15 @@ config.WATCH && fs.watch(path.resolve(config.API_DIR,), async (event, filename) 
     restart();
 });
 // 静态资源信息处理
-// @ts-ignore
-app.use(staticPlugin({
-    prefix: `${config.STATIC_ROUTE_PREFIX}`, // prefix
-    assets: resolve(config.STATIC_DIR),
-    indexHTML: true,
-    noCache: true,
-
-}));
+await safeRun(() => {
+    // @ts-ignore
+    return app.use(staticPlugin({
+        prefix: `${config.STATIC_ROUTE_PREFIX}`, // prefix
+        assets: resolve(config.STATIC_DIR),
+        indexHTML: true,
+        noCache: true,
+    }));
+});
 // 监听
 app.listen(~~config.PORT);
 // 欢迎信息
@@ -159,7 +155,7 @@ logger.info(`
 | StaticFile: running on http://localhost:${config.PORT}/${config.STATIC_ROUTE_PREFIX}
 · Tips: 
 | Restart: Press key ${chalk.redBright.bold('R')}
-| Exit: Press key ${chalk.redBright.bold('D')}
+| Exit: Press key ${chalk.redBright.bold('Q')}
 `);
 routeTable.printTable();
 
@@ -193,7 +189,7 @@ process.stdin.on('keypress', (str, key) => {
             restart();
             break;
         //按d退出
-        case 'd':
+        case 'q':
             process.exit(0);
             break;
     }

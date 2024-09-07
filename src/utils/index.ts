@@ -19,6 +19,7 @@ export function safeRun<T extends (...args: any[]) => any>(fn: T, safeValue?: Re
     try {
         return fn();
     } catch (e) {
+        console.error(e);
         return safeValue;
     }
 }

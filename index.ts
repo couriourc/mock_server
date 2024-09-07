@@ -24,33 +24,55 @@ import {COLOR_MAPS, DEFAULT_CONFIG} from "./src/constants";
 const cwd = (p?: string) => path.resolve(process.cwd(), p ?? '');
 // 配置优先级 argv > 文件 > 默认配置
 // 读取配置文件，加载配置
-const parsedConfig = dotenv.parse<IConfigParameter>(await safeRun(() => fs.readFileSync(cwd("./.simple-mock")), await Buffer.from('')));
-// S 配置启动命令信息
-program.option('-d, --debug', 'output extra debugging', true)
-    .option('-p , --port <port>', 'server port', "3000")
-    .option('-s , --silent <silent>', 'silent output', false)
-    .option('-w , --watch <watch>', 'silent output', false)
-    .option('-f , --static-dir <static-dir>', 'static dir', false)
-    .option('-el , --error-log <error-log>', 'error log file path', "./error.log")
-    .option('-dl , --debug-log <debug-log>', 'debug log file path', "./debug.log");
-program.parse(process.argv);
-// E 配置启动命令信息
 
+// S 配置启动命令信息
+program.option('-d, --debug', 'output extra debugging')
+    .option('-p , --port <port>', 'server port')
+    .option('-s , --silent <silent>', 'silent output')
+    .option('-w , --watch <watch>', 'silent output')
+    .option('-f , --static-dir <static-dir>', 'static dir')
+    .option('-el , --error-log <error-log>', 'error log file path')
+    .option('-dl , --debug-log <debug-log>', 'debug log file path')
+    .option('-c , --config <config-file>', 'config file path')
+;
+const command = program.parse(process.argv);
+// E 配置启动命令信息
+const parsedConfig = dotenv.parse<IConfigParameter>(await safeRun(() => {
+        const configFilePath = cwd(command.getOptionValue('config') ?? "./.simple-mock");
+        if (!fs.existsSync(configFilePath)) {
+            // @ts-ignore
+            return Buffer.from('');
+        }
+        return fs.readFileSync(configFilePath);
+    },
+    // @ts-ignore
+    Buffer.from("")
+));
 
 // S 相关配置
 const config = mergeDeep(DEFAULT_CONFIG, {
-    PORT: (program as IConfigParameter)['port'] ?? parsedConfig?.PORT ?? DEFAULT_CONFIG.PORT,
-    SILENT: (program as IConfigParameter)['silent'] ?? parsedConfig?.SILENT ?? DEFAULT_CONFIG.SILENT,
-    ERROR_LOG_FILE_PATH: program['error_log'] ?? parsedConfig?.ERROR_LOG_FILE_PATH ?? DEFAULT_CONFIG.ERROR_LOG_FILE_PATH,
-    DEBUG_LOG_FILE_PATH: program['debug_log'] ?? parsedConfig?.DEBUG_LOG_FILE_PATH ?? DEFAULT_CONFIG.DEBUG_LOG_FILE_PATH,
-    WATCH: program['watch'] ?? parsedConfig?.WATCH ?? DEFAULT_CONFIG.WATCH,
-    STATIC_DIR: program['static-dir'] ?? parsedConfig?.STATIC_DIR ?? DEFAULT_CONFIG.STATIC_DIR,
-    STATIC_ROUTE_PREFIX: program['static-route-prefix'] ?? parsedConfig?.STATIC_ROUTE_PREFIX ?? DEFAULT_CONFIG.STATIC_ROUTE_PREFIX
+    PORT: command.getOptionValue('port') ?? parsedConfig?.PORT ?? DEFAULT_CONFIG.PORT,
+    SILENT: command.getOptionValue("silent") ?? parsedConfig?.SILENT ?? DEFAULT_CONFIG.SILENT,
+    ERROR_LOG_FILE_PATH: command.getOptionValue("error_log") ?? parsedConfig?.ERROR_LOG_FILE_PATH ?? DEFAULT_CONFIG.ERROR_LOG_FILE_PATH,
+    DEBUG_LOG_FILE_PATH: command.getOptionValue("debug_log") ?? parsedConfig?.DEBUG_LOG_FILE_PATH ?? DEFAULT_CONFIG.DEBUG_LOG_FILE_PATH,
+    WATCH: command.getOptionValue("watch") ?? parsedConfig?.WATCH ?? DEFAULT_CONFIG.WATCH,
+    STATIC_DIR: command.getOptionValue("static-dir") ?? parsedConfig?.STATIC_DIR ?? DEFAULT_CONFIG.STATIC_DIR,
+    STATIC_ROUTE_PREFIX: command.getOptionValue("static-route-prefix") ?? parsedConfig?.STATIC_ROUTE_PREFIX ?? DEFAULT_CONFIG.STATIC_ROUTE_PREFIX
 } as Partial<IConfigParameter>);
-
 const resolve = (p?: string) => path.resolve(cwd(config.ROOT_DIR), p ?? '');
 
 // E 相关配置
+
+// 创建默认配置文件夹
+{
+    if (!fs.existsSync(resolve(config.STATIC_DIR))) {
+        fs.mkdirSync(resolve(config.STATIC_DIR));
+    }
+    if (!fs.existsSync(resolve(config.API_DIR))) {
+        fs.mkdirSync(resolve(config.API_DIR));
+    }
+}
+
 // S 打印日志配置
 
 const logger = new Logger({
@@ -191,9 +213,9 @@ function restart() {
 
 // 拦截
 readline.emitKeypressEvents(process.stdin);
-// 监听重新加载
 process.stdin.setRawMode(true);
-process.stdin.on('keypress', (str, key) => {
+// 监听事件
+process.stdin.on('keypress', (str) => {
     str = str.toLowerCase();
     switch (str) {
         //按r重启

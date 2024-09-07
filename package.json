@@ -7,20 +7,32 @@
     "@types/dotenv": "^8.2.0",
     "@types/mustache": "^4.2.5",
     "@types/node": "^22.5.4",
-    "@types/underscore": "^1.11.15"
+    "@types/underscore": "^1.11.15",
+    "chalk": "^5.3.0"
   },
   "scripts": {
-    "build": "bun build --minify --compile --target=bun-windows-x64 index.ts --outfile SimpleMockServer",
-    "dev": "bun --watch run index.ts"
+    "build:win-x64": "bun build --minify --compile --target=bun-windows-x64 index.ts --outfile dist/SimpleMockServer",
+    "build:linux-x64": "bun build --minify --compile --target=bun-linux-x64 index.ts --outfile dist/SimpleMockServer",
+    "build:linux-x64-baseline": "bun build --minify --compile --target=bun-linux-x64-baseline index.ts --outfile dist/SimpleMockServer",
+    "build:linux-arm64": "bun build --minify --compile --target=bun-linux-x64-arm64 index.ts --outfile dist/SimpleMockServer",
+    "build:darwin-arm64": "bun build --minify --compile --target=bun-darwin-arm64 index.ts --outfile dist/SimpleMockServer",
+    "build:darwin-x64": "bun build --minify --compile --target=bun-darwin-x64 index.ts --outfile dist/SimpleMockServer",
+    "build:all": "bun run build:win-x64 && bun run build:linux-x64 && bun run build:linux-x64-baseline && bun run build:linux-arm64 && bun run build:darwin-arm64 && bun run build:darwin-x64",
+    "build": "bun run build:win-x64",
+    "dev": "bun --watch run index.ts",
+    "test": "bun run index.ts"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
+    "@elysiajs/static": "^1.1.1",
     "@ptkdev/logger": "^1.8.0",
     "@types/mockjs": "^1.0.10",
     "c-log": "^0.0.3",
+    "commander": "^12.1.0",
+    "console-table-printer": "^2.12.1",
     "dotenv": "^16.4.5",
     "elysia": "^1.1.12",
     "mockjs": "^1.1.0",

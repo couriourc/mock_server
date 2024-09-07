@@ -15,12 +15,10 @@ export function extractFunctionOrValue<T extends any>(
  * @param fn{T} 需要执行的函数
  * @param safeValue{ReturnType<T>} 执行失败返回的值
  * */
-export function safeRun<T extends (...args: any[]) => any>(fn: T, safeValue: ReturnType<T>) {
+export function safeRun<T extends (...args: any[]) => any>(fn: T, safeValue?: ReturnType<T>) {
     try {
         return fn();
-    } catch(e) {
-        console.log(e)
-
+    } catch (e) {
         return safeValue;
     }
 }

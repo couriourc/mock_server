@@ -11,6 +11,9 @@ importers:
       '@elysiajs/cors':
         specifier: ^1.1.1
         version: 1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))
+      '@elysiajs/static':
+        specifier: ^1.1.1
+        version: 1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))
       '@ptkdev/logger':
         specifier: ^1.8.0
         version: 1.8.0
@@ -20,6 +23,12 @@ importers:
       c-log:
         specifier: ^0.0.3
         version: 0.0.3
+      commander:
+        specifier: ^12.1.0
+        version: 12.1.0
+      console-table-printer:
+        specifier: ^2.12.1
+        version: 2.12.1
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -54,11 +63,19 @@ importers:
       '@types/underscore':
         specifier: ^1.11.15
         version: 1.11.15
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
 
 packages:
 
   '@elysiajs/cors@1.1.1':
     resolution: {integrity: sha512-Bl6JSURwbneaJqkq02bd0C/F8StkmU5zoPLpnSncy4DZSU8TDwWPXxmoHqozI3hf1piDaSQ+I21cmpjPlQ8uYQ==}
+    peerDependencies:
+      elysia: '>= 1.1.0'
+
+  '@elysiajs/static@1.1.1':
+    resolution: {integrity: sha512-H1KqsuNHhHKYKUkPoies0pPQBgbA4qsfre840FKraeF99jz++2P/igrOagp8cWqwFGrHP1V+nwGlGm9U6rZAEg==}
     peerDependencies:
       elysia: '>= 1.1.0'
 
@@ -113,9 +130,17 @@ packages:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
 
+  chalk@5.3.0:
+    resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
   cli-table@0.3.11:
     resolution: {integrity: sha512-IqLQi4lO0nIB4tcdTpN4LCB9FI3uqrJZK7RC515EnhZ6qBaglkIgICb1wjeAqpdoOabm1+SuQtkXIPdYC93jhQ==}
     engines: {node: '>= 0.2.0'}
+
+  clone@2.1.2:
+    resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
+    engines: {node: '>=0.8'}
 
   color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
@@ -135,6 +160,9 @@ packages:
   commander@12.1.0:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
     engines: {node: '>=18'}
+
+  console-table-printer@2.12.1:
+    resolution: {integrity: sha512-wKGOQRRvdnd89pCeH96e2Fn4wkbenSP6LMHfjfyNLMbGuHEFbMqQNuxXqd0oXG9caIOQ1FTvc5Uijp9/4jujnQ==}
 
   cookie@0.6.0:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
@@ -191,6 +219,10 @@ packages:
     resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
     hasBin: true
 
+  node-cache@5.1.2:
+    resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
+    engines: {node: '>= 8.0.0'}
+
   pify@3.0.0:
     resolution: {integrity: sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==}
     engines: {node: '>=4'}
@@ -198,6 +230,9 @@ packages:
   rotating-file-stream@2.1.6:
     resolution: {integrity: sha512-qS0ndAlDu80MMXeRonqGMXslF0FErzcUSbcXhus3asRG4cvCS79hc5f7s0x4bPAsH6wAwyHVIeARg69VUe3JmQ==}
     engines: {node: '>=10.0'}
+
+  simple-wcswidth@1.0.1:
+    resolution: {integrity: sha512-xMO/8eNREtaROt7tJvWJqHBDTMFN4eiQ5I4JRMuilwfnFcV5W9u7RUkueNkdw0jPqGMX36iCywelS5yilTuOxg==}
 
   steno@0.4.4:
     resolution: {integrity: sha512-EEHMVYHNXFHfGtgjNITnka0aHhiAlo93F7z2/Pwd+g0teG9CnM3JIINM7hVVB5/rhw9voufD7Wukwgtw2uqh6w==}
@@ -233,6 +268,11 @@ snapshots:
   '@elysiajs/cors@1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))':
     dependencies:
       elysia: 1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4)
+
+  '@elysiajs/static@1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))':
+    dependencies:
+      elysia: 1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4)
+      node-cache: 5.1.2
 
   '@ptkdev/logger@1.8.0':
     dependencies:
@@ -291,9 +331,13 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
+  chalk@5.3.0: {}
+
   cli-table@0.3.11:
     dependencies:
       colors: 1.0.3
+
+  clone@2.1.2: {}
 
   color-convert@2.0.1:
     dependencies:
@@ -306,6 +350,10 @@ snapshots:
   colors@1.0.3: {}
 
   commander@12.1.0: {}
+
+  console-table-printer@2.12.1:
+    dependencies:
+      simple-wcswidth: 1.0.1
 
   cookie@0.6.0: {}
 
@@ -355,9 +403,15 @@ snapshots:
 
   mustache@4.2.0: {}
 
+  node-cache@5.1.2:
+    dependencies:
+      clone: 2.1.2
+
   pify@3.0.0: {}
 
   rotating-file-stream@2.1.6: {}
+
+  simple-wcswidth@1.0.1: {}
 
   steno@0.4.4:
     dependencies:

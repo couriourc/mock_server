@@ -1,3 +1,0 @@
-API_DIR=example
-PORT=3000
-LOG_SIZE=10M

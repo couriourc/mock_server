@@ -14,6 +14,9 @@ importers:
       '@elysiajs/static':
         specifier: ^1.1.1
         version: 1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))
+      '@grotto/logysia':
+        specifier: ^0.1.4
+        version: 0.1.4(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))(typescript@5.5.4)
       '@ptkdev/logger':
         specifier: ^1.8.0
         version: 1.8.0
@@ -81,6 +84,12 @@ packages:
     resolution: {integrity: sha512-H1KqsuNHhHKYKUkPoies0pPQBgbA4qsfre840FKraeF99jz++2P/igrOagp8cWqwFGrHP1V+nwGlGm9U6rZAEg==}
     peerDependencies:
       elysia: '>= 1.1.0'
+
+  '@grotto/logysia@0.1.4':
+    resolution: {integrity: sha512-BpnKDGKelpPagdi3LxfGI9wxBRagl6D0IXeyqZfk+maXHLtq/ohRSSa/jX881N+2bVllZ2FZzCyQj+Tr0dY+oA==}
+    peerDependencies:
+      elysia: ^1.0.0-rc.11
+      typescript: ^5.3.3
 
   '@ptkdev/logger@1.8.0':
     resolution: {integrity: sha512-gwg0pleMUyzsZIErDtzz2OP4F2Q3nzRGjhUTP+831/eogq17LpG7PgbHo1n1HZ/dlz/v2xvotfUcPLO3IzwEVQ==}
@@ -242,6 +251,9 @@ packages:
     resolution: {integrity: sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==}
     engines: {node: '>=8'}
 
+  picocolors@1.1.0:
+    resolution: {integrity: sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==}
+
   pify@3.0.0:
     resolution: {integrity: sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==}
     engines: {node: '>=4'}
@@ -305,6 +317,12 @@ snapshots:
     dependencies:
       elysia: 1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4)
       node-cache: 5.1.2
+
+  '@grotto/logysia@0.1.4(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))(typescript@5.5.4)':
+    dependencies:
+      elysia: 1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4)
+      picocolors: 1.1.0
+      typescript: 5.5.4
 
   '@ptkdev/logger@1.8.0':
     dependencies:
@@ -452,6 +470,8 @@ snapshots:
       clone: 2.1.2
 
   path-key@3.1.1: {}
+
+  picocolors@1.1.0: {}
 
   pify@3.0.0: {}
 

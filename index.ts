@@ -2,7 +2,6 @@ import {Glob} from "bun";
 import * as process from "process";
 import Elysia from 'elysia';
 import * as path from "path";
-import {safeRun} from "./src/utils";
 import * as Mock from "mockjs";
 import Mustache from "mustache";
 import dotenv from 'dotenv';
@@ -12,12 +11,15 @@ import {pick} from "underscore";
 import {program} from "commander";
 import {mergeDeep} from "elysia/utils";
 import {Table} from "console-table-printer";
-import type {IConfigParameter} from "./src/types";
-import {COLOR_MAPS, DEFAULT_CONFIG} from "./src/constants";
 import cluster from "cluster";
 import readline from "readline";
 import chalk from 'chalk';
 import {staticPlugin} from '@elysiajs/static';
+//@ts-ignore
+import {logger as midLogger} from '@grotto/logysia';
+import {safeRun} from "./src/utils";
+import type {IConfigParameter} from "./src/types";
+import {COLOR_MAPS, DEFAULT_CONFIG} from "./src/constants";
 
 const cwd = (p?: string) => path.resolve(process.cwd(), p ?? '');
 // 配置优先级 argv > 文件 > 默认配置
@@ -138,10 +140,20 @@ await safeRun(() => {
         assets: resolve(config.STATIC_DIR),
         indexHTML: true,
         noCache: true,
+        alwaysStatic: false // 文件动态获取信息
     }));
 });
 // 监听
-app.listen(~~config.PORT);
+app
+    .use(midLogger({
+        logIP: false,
+        writer: {
+            write(msg: string) {
+                logger.debug(msg);
+            }
+        }
+    }))
+    .listen(~~config.PORT);
 // 欢迎信息
 // @ts-ignore
 logger.info(`
@@ -177,7 +189,7 @@ function restart() {
     }
 }
 
-
+// 拦截
 readline.emitKeypressEvents(process.stdin);
 // 监听重新加载
 process.stdin.setRawMode(true);

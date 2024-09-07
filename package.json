@@ -29,6 +29,7 @@
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
     "@elysiajs/static": "^1.1.1",
+    "@grotto/logysia": "^0.1.4",
     "@ptkdev/logger": "^1.8.0",
     "@types/mockjs": "^1.0.10",
     "c-log": "^0.0.3",

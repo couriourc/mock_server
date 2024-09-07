@@ -3,17 +3,28 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/dotenv": "^8.2.0",
+    "@types/mustache": "^4.2.5",
+    "@types/node": "^22.5.4",
+    "@types/underscore": "^1.11.15"
   },
   "scripts": {
-    "build": "bun build --compile --target=bun-windows-x64 index.ts --outfile myapp"
+    "build": "bun build --minify --compile --target=bun-windows-x64 index.ts --outfile SimpleMockServer",
+    "dev": "bun --watch run index.ts"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
-    "@types/node": "^22.5.4",
-    "elysia": "^1.1.12"
+    "@ptkdev/logger": "^1.8.0",
+    "@types/mockjs": "^1.0.10",
+    "c-log": "^0.0.3",
+    "dotenv": "^16.4.5",
+    "elysia": "^1.1.12",
+    "mockjs": "^1.1.0",
+    "mustache": "^4.2.0",
+    "underscore": "^1.13.7"
   }
 }

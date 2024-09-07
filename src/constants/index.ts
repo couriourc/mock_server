@@ -4,7 +4,8 @@ export {default as COLOR_MAPS} from "./colors.ts";
 export const DEFAULT_CONFIG: IConfigParameter = {
     ROOT_DIR: "example",
     API_DIR: 'apis',
-    STATIC_DIR: 'static',
+    STATIC_DIR: './static/',
+    STATIC_ROUTE_PREFIX: 'static',
     PORT: "3000",
     SILENT: false,
     ERROR_LOG_FILE_PATH: "./error.log",

@@ -11,4 +11,5 @@ export interface IConfigParameter {
     ROOT_DIR: string;
     API_DIR: string;
     STATIC_DIR: string;
+    STATIC_ROUTE_PREFIX: string;
 }

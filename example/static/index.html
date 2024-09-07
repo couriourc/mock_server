@@ -5,9 +5,27 @@
 	<meta name="viewport"
 	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
+	<title>获取信息</title>
+	<link rel="stylesheet" href="./normalize.css"/>
+	<link rel="stylesheet" href="./bootstrap.min.css"/>
+	<script src="./jquery.min.js"></script>
+	<script>
+		function getInfo() {
+
+			fetch('/api/').then(d => d.json()).then((d) => {
+				document.getElementById('preview').innerHTML +=
+						`<li class="list-group-item">${JSON.stringify(d)}</li>`;
+			});
+		}
+	</script>
+
 </head>
-<body>
-asd
+<body class="container center-block">
+<div class="text-warning" role="alert">
+	点击按钮获取信息
+</div>
+<ul id="preview" class="list-group list-group-numbered">
+</ul>
+<button class="btn btn-primary" onclick="getInfo()">获取信息</button>
 </body>
 </html>

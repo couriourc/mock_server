@@ -42,7 +42,8 @@ const config = mergeDeep(DEFAULT_CONFIG, {
     ERROR_LOG_FILE_PATH: program['error_log'] ?? parsedConfig?.ERROR_LOG_FILE_PATH ?? DEFAULT_CONFIG.ERROR_LOG_FILE_PATH,
     DEBUG_LOG_FILE_PATH: program['debug_log'] ?? parsedConfig?.DEBUG_LOG_FILE_PATH ?? DEFAULT_CONFIG.DEBUG_LOG_FILE_PATH,
     WATCH: program['watch'] ?? parsedConfig?.WATCH ?? DEFAULT_CONFIG.WATCH,
-    STATIC_DIR: program['static-dir'] ?? parsedConfig?.STATIC_DIR ?? DEFAULT_CONFIG.STATIC_DIR
+    STATIC_DIR: program['static-dir'] ?? parsedConfig?.STATIC_DIR ?? DEFAULT_CONFIG.STATIC_DIR,
+    STATIC_ROUTE_PREFIX: program['static-route-prefix'] ?? parsedConfig?.STATIC_ROUTE_PREFIX ?? DEFAULT_CONFIG.STATIC_ROUTE_PREFIX
 } as Partial<IConfigParameter>);
 
 const resolve = (p?: string) => path.resolve(cwd(config.ROOT_DIR), p ?? '');
@@ -137,14 +138,16 @@ config.WATCH && fs.watch(path.resolve(config.API_DIR,), async (event, filename) 
 // 静态资源信息处理
 // @ts-ignore
 app.use(staticPlugin({
-    prefix: '/static',
-    alwaysStatic: true,
-    assets: resolve('static'),
-    indexHTML: true
+    prefix: `${config.STATIC_ROUTE_PREFIX}`, // prefix
+    assets: resolve(config.STATIC_DIR),
+    indexHTML: true,
+    noCache: true,
+
 }));
 // 监听
 app.listen(~~config.PORT);
 // 欢迎信息
+// @ts-ignore
 logger.info(`
 > Hi,I'm SimpleMockServer, 
 · Now dir configuration: 
@@ -153,7 +156,7 @@ logger.info(`
 | STATIC_DIR: ${chalk.white.bold(resolve(config.STATIC_DIR))}
 · Now Server: 
 | ServerApi: running on http://localhost:${config.PORT}
-| StaticFile: running on http://localhost:${config.PORT}/${config.STATIC_DIR}
+| StaticFile: running on http://localhost:${config.PORT}/${config.STATIC_ROUTE_PREFIX}
 · Tips: 
 | Restart: Press key ${chalk.redBright.bold('R')}
 | Exit: Press key ${chalk.redBright.bold('D')}

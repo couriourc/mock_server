@@ -1,7 +1,16 @@
 ## SimpleMockServer
-<div style="width: 100%;display: flex;">
-    <img src="./docs/logo.jpg" style="margin: 0 auto;border-radius: 20px;"/>
-</div>
+
+<p align="center">
+  <a href="https://ruffle.rs"><img src="./docs/logo.jpg" style="margin: 0 auto;border-radius: 20px;"/></a>
+</p>
+<p align="center">
+  <br />
+  <strong>
+    <a href="./example">demo</a> |
+    <a href="https://github.com/couriourc/mock_server/releases">nightly builds</a> | 
+    <a href="https://github.com/couriourc/mock_server/wiki">wiki</a>
+  </strong>
+</p>
 
 > 让 mock 更简单
 

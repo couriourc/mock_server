@@ -1,10 +1,16 @@
-ROOT_DIR: .
-API_DIR: apis
-STATIC_DIR: ./static
-STATIC_ROUTE_PREFIX: static
-PORT: 3000
-SILENT:
-ERROR_LOG_FILE_PATH: ./error.log
-LOG_SIZE: 10M
-DEBUG_LOG_FILE_PATH: ./debug.log
-WATCH:
+root_dir: .
+api_dir: apis
+static_dir: ./static
+static_route_prefix: static
+port: 3000
+silent:
+error_log_file_path: ./error.log
+log_size: 10M
+debug_log_file_path: ./debug.log
+watch:
+plugins:
+  peer-stream:
+    enabled: true
+    options:
+      peerId: 'peer-stream-id'
+      secretKey: 'peer-stream-secret-key'

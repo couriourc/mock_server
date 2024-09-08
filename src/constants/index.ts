@@ -4,16 +4,16 @@ import * as process from "process";
 export {default as COLOR_MAPS} from "./colors.ts";
 
 export const DEFAULT_CONFIG: IConfigParameter = {
-    ROOT_DIR: process.env.NODE_ENV === "development" ? "example" : ".",
-    API_DIR: 'apis',
-    STATIC_DIR: './static/',
-    STATIC_ROUTE_PREFIX: 'static',
-    PORT: "3000",
-    SILENT: false,
-    ERROR_LOG_FILE_PATH: "./error.log",
-    LOG_SIZE: "10M",
-    DEBUG_LOG_FILE_PATH: "./debug.log",
-    WATCH: false,
-    PLUGIN_DIR: "./plugins",
+    root_dir: process.env.NODE_ENV === "development" ? "example" : ".",
+    api_dir: 'apis',
+    static_dir: './static/',
+    static_route_prefix: 'static',
+    port: "3000",
+    silent: false,
+    error_log_file_path: "./error.log",
+    log_size: "10M",
+    debug_log_file_path: "./debug.log",
+    watch: false,
+    plugin_dir: "./plugins",
 };
 

@@ -32,6 +32,9 @@ importers:
       console-table-printer:
         specifier: ^2.12.1
         version: 2.12.1
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -50,6 +53,9 @@ importers:
       underscore:
         specifier: ^1.13.7
         version: 1.13.7
+      yaml:
+        specifier: ^2.5.1
+        version: 2.5.1
     devDependencies:
       '@types/bun':
         specifier: latest
@@ -69,9 +75,6 @@ importers:
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
 
 packages:
 
@@ -307,6 +310,11 @@ packages:
     engines: {node: '>= 8'}
     hasBin: true
 
+  yaml@2.5.1:
+    resolution: {integrity: sha512-bLQOjaX/ADgQ20isPJRvF0iRUHIxVhYvr53Of7wGcWlO2jvtUlH5m87DsmulFVxRpNLOnI4tB6p/oh8D7kpn9Q==}
+    engines: {node: '>= 14'}
+    hasBin: true
+
 snapshots:
 
   '@elysiajs/cors@1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))':
@@ -510,3 +518,5 @@ snapshots:
   which@2.0.2:
     dependencies:
       isexe: 2.0.0
+
+  yaml@2.5.1: {}

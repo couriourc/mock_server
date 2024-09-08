@@ -4,10 +4,9 @@ import Elysia from 'elysia';
 import * as path from "path";
 import * as Mock from "mockjs";
 import Mustache from "mustache";
-import dotenv from 'dotenv';
 import * as fs from "fs";
 import Logger from "@ptkdev/logger";
-import {pick} from "underscore";
+import _, {pick} from "underscore";
 import {program} from "commander";
 import {mergeDeep} from "elysia/utils";
 import {Table} from "console-table-printer";
@@ -20,13 +19,15 @@ import {logger as midLogger} from '@grotto/logysia';
 import {safeRun} from "./src/utils";
 import type {IConfigParameter} from "./src/types";
 import {COLOR_MAPS, DEFAULT_CONFIG} from "./src/constants";
+import yaml from "yaml";
 
-const cwd = (p?: string) => path.resolve(process.cwd(), p ?? '');
+const cwd = (...p: string[]) => path.resolve(process.cwd(), ...p);
 // 配置优先级 argv > 文件 > 默认配置
 // 读取配置文件，加载配置
 
 // S 配置启动命令信息
 program.option('-d, --debug', 'output extra debugging')
+    .option('-r , --cwd <cwd>', 'cwd')
     .option('-p , --port <port>', 'server port')
     .option('-s , --silent <silent>', 'silent output')
     .option('-w , --watch <watch>', 'silent output')
@@ -38,34 +39,39 @@ program.option('-d, --debug', 'output extra debugging')
 ;
 const command = program.parse(process.argv);
 // E 配置启动命令信息
-const parsedConfig = dotenv.parse<IConfigParameter>(await safeRun(() => {
-        const configFilePath = cwd(command.getOptionValue('config') ?? "./.simple-mock");
+const parsedConfig = yaml.parse<IConfigParameter>(await safeRun(() => {
+        const configFilePath = cwd(command.getOptionValue('cwd') ?? DEFAULT_CONFIG.ROOT_DIR, command.getOptionValue('config') ?? "./.simple-mock.yaml");
         if (!fs.existsSync(configFilePath)) {
-            // @ts-ignore
-            return Buffer.from('');
+            return '';
         }
-        return fs.readFileSync(configFilePath);
+        return fs.readFileSync(configFilePath).toString();
     },
     // @ts-ignore
-    Buffer.from("")
+    ""
 ));
 
 // S 相关配置
+const choice = (cmd: any, parsed: any, defaultConfig: any) => {
+    return cmd ??
+    _.isNull(parsed) ?
+        defaultConfig :
+        parsed;
+};
 const config = mergeDeep(DEFAULT_CONFIG, {
-    PORT: command.getOptionValue('port') ?? parsedConfig?.PORT ?? DEFAULT_CONFIG.PORT,
-    SILENT: command.getOptionValue("silent") ?? parsedConfig?.SILENT ?? DEFAULT_CONFIG.SILENT,
-    ERROR_LOG_FILE_PATH: command.getOptionValue("error_log") ?? parsedConfig?.ERROR_LOG_FILE_PATH ?? DEFAULT_CONFIG.ERROR_LOG_FILE_PATH,
-    DEBUG_LOG_FILE_PATH: command.getOptionValue("debug_log") ?? parsedConfig?.DEBUG_LOG_FILE_PATH ?? DEFAULT_CONFIG.DEBUG_LOG_FILE_PATH,
-    WATCH: command.getOptionValue("watch") ?? parsedConfig?.WATCH ?? DEFAULT_CONFIG.WATCH,
-    STATIC_DIR: command.getOptionValue("static-dir") ?? parsedConfig?.STATIC_DIR ?? DEFAULT_CONFIG.STATIC_DIR,
-    STATIC_ROUTE_PREFIX: command.getOptionValue("static-route-prefix") ?? parsedConfig?.STATIC_ROUTE_PREFIX ?? DEFAULT_CONFIG.STATIC_ROUTE_PREFIX
+    PORT: choice(command.getOptionValue('port'), parsedConfig?.PORT, DEFAULT_CONFIG.PORT),
+    SILENT: choice(command.getOptionValue("silent"), parsedConfig?.SILENT, DEFAULT_CONFIG.SILENT),
+    ERROR_LOG_FILE_PATH: choice(command.getOptionValue("error_log"), parsedConfig?.ERROR_LOG_FILE_PATH, DEFAULT_CONFIG.ERROR_LOG_FILE_PATH),
+    DEBUG_LOG_FILE_PATH: choice(command.getOptionValue("debug_log"), parsedConfig?.DEBUG_LOG_FILE_PATH, DEFAULT_CONFIG.DEBUG_LOG_FILE_PATH),
+    WATCH: choice(command.getOptionValue("watch"), parsedConfig?.WATCH, DEFAULT_CONFIG.WATCH),
+    STATIC_DIR: choice(command.getOptionValue("static-dir"), parsedConfig?.STATIC_DIR, DEFAULT_CONFIG.STATIC_DIR),
+    STATIC_ROUTE_PREFIX: choice(command.getOptionValue("static-route-prefix"), parsedConfig?.STATIC_ROUTE_PREFIX, DEFAULT_CONFIG.STATIC_ROUTE_PREFIX)
 } as Partial<IConfigParameter>);
 const resolve = (p?: string) => path.resolve(cwd(config.ROOT_DIR), p ?? '');
 
 // E 相关配置
 
-// 创建默认配置文件夹
 {
+    // 创建默认配置文件夹
     if (!fs.existsSync(resolve(config.STATIC_DIR))) {
         fs.mkdirSync(resolve(config.STATIC_DIR));
     }

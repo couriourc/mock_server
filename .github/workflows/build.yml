@@ -13,12 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'yarn'
-      - name: setup node
+      - name: setup bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest

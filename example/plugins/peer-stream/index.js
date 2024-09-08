@@ -1,7 +1,7 @@
-export default function({app, logger}) {
+export default function({app, logger, option}) {
   app.ws('/ws', {
     message(ws, message) {
-      logger.info(message);
+      logger.info(option);
     },
   });
 }

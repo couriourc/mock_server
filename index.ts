@@ -40,7 +40,7 @@ program.option('-d, --debug', 'output extra debugging')
 const command = program.parse(process.argv);
 // E 配置启动命令信息
 const parsedConfig = yaml.parse<IConfigParameter>(await safeRun(() => {
-        const configFilePath = cwd(command.getOptionValue('cwd') ?? DEFAULT_CONFIG.ROOT_DIR, command.getOptionValue('config') ?? "./.simple-mock.yaml");
+        const configFilePath = cwd(command.getOptionValue('cwd') ?? DEFAULT_CONFIG.root_dir, command.getOptionValue('config') ?? "./.simple-mock.yaml");
         if (!fs.existsSync(configFilePath)) {
             return '';
         }
@@ -58,25 +58,25 @@ const choice = (cmd: any, parsed: any, defaultConfig: any) => {
         parsed;
 };
 const config = mergeDeep(DEFAULT_CONFIG, {
-    PORT: choice(command.getOptionValue('port'), parsedConfig?.PORT, DEFAULT_CONFIG.PORT),
-    SILENT: choice(command.getOptionValue("silent"), parsedConfig?.SILENT, DEFAULT_CONFIG.SILENT),
-    ERROR_LOG_FILE_PATH: choice(command.getOptionValue("error_log"), parsedConfig?.ERROR_LOG_FILE_PATH, DEFAULT_CONFIG.ERROR_LOG_FILE_PATH),
-    DEBUG_LOG_FILE_PATH: choice(command.getOptionValue("debug_log"), parsedConfig?.DEBUG_LOG_FILE_PATH, DEFAULT_CONFIG.DEBUG_LOG_FILE_PATH),
-    WATCH: choice(command.getOptionValue("watch"), parsedConfig?.WATCH, DEFAULT_CONFIG.WATCH),
-    STATIC_DIR: choice(command.getOptionValue("static-dir"), parsedConfig?.STATIC_DIR, DEFAULT_CONFIG.STATIC_DIR),
-    STATIC_ROUTE_PREFIX: choice(command.getOptionValue("static-route-prefix"), parsedConfig?.STATIC_ROUTE_PREFIX, DEFAULT_CONFIG.STATIC_ROUTE_PREFIX)
+    port: choice(command.getOptionValue('port'), parsedConfig?.port, DEFAULT_CONFIG.port),
+    silent: choice(command.getOptionValue("silent"), parsedConfig?.silent, DEFAULT_CONFIG.silent),
+    error_log_file_path: choice(command.getOptionValue("error_log"), parsedConfig?.error_log_file_path, DEFAULT_CONFIG.error_log_file_path),
+    debug_log_file_path: choice(command.getOptionValue("debug_log"), parsedConfig?.debug_log_file_path, DEFAULT_CONFIG.debug_log_file_path),
+    watch: choice(command.getOptionValue("watch"), parsedConfig?.watch, DEFAULT_CONFIG.watch),
+    static_dir: choice(command.getOptionValue("static-dir"), parsedConfig?.static_dir, DEFAULT_CONFIG.static_dir),
+    static_route_prefix: choice(command.getOptionValue("static-route-prefix"), parsedConfig?.static_route_prefix, DEFAULT_CONFIG.static_route_prefix)
 } as Partial<IConfigParameter>);
-const resolve = (p?: string) => path.resolve(cwd(config.ROOT_DIR), p ?? '');
+const resolve = (p?: string) => path.resolve(cwd(config.root_dir), p ?? '');
 
 // E 相关配置
 
 {
     // 创建默认配置文件夹
-    if (!fs.existsSync(resolve(config.STATIC_DIR))) {
-        fs.mkdirSync(resolve(config.STATIC_DIR));
+    if (!fs.existsSync(resolve(config.static_dir))) {
+        fs.mkdirSync(resolve(config.static_dir));
     }
-    if (!fs.existsSync(resolve(config.API_DIR))) {
-        fs.mkdirSync(resolve(config.API_DIR));
+    if (!fs.existsSync(resolve(config.api_dir))) {
+        fs.mkdirSync(resolve(config.api_dir));
     }
 }
 
@@ -84,22 +84,22 @@ const resolve = (p?: string) => path.resolve(cwd(config.ROOT_DIR), p ?? '');
 const plugins: ({
     name: string;
     execute: Function;
+    option: any
 }) [] = [];
 const logger = new Logger({
-    sponsor: !config.SILENT,
-    info: !config.SILENT,
-    debug: !config.SILENT,
+    sponsor: !config.silent,
+    info: !config.silent,
+    debug: !config.silent,
     rotate: {
-        size: config.LOG_SIZE,
+        size: config.log_size,
         encoding: "utf8",
     },
 });
 
-
 {
     // 加载插件
     const glob = new Glob("*/package.json");
-    const resolvedPluginPath = resolve(config.PLUGIN_DIR);
+    const resolvedPluginPath = resolve(config.plugin_dir);
     if (fs.existsSync(resolvedPluginPath)) {
         for await (const file of glob.scan(resolvedPluginPath)) {
             const plugin = await import(path.join(resolvedPluginPath, file));
@@ -107,10 +107,13 @@ const logger = new Logger({
                 logger.error("Manifest need main field!");
             }
             const main = await import( path.resolve(path.dirname(path.resolve(resolvedPluginPath, file)), plugin.main));
+            const enabled = parsedConfig.plugins?.[plugin.name]?.enabled ?? true;
+            if (!enabled) continue;
             if (typeof main.default === "function") {
                 plugins.push({
-                    name: plugin.name ?? file,
+                    name: plugin.name,
                     execute: main.default,
+                    option: parsedConfig.plugins?.[plugin.name] ?? {}
                 });
             }
         }
@@ -149,7 +152,7 @@ const routeTable = new Table({
     },
 });
 let apiLength = 0;
-for await (const file of glob.scan(resolve(config.API_DIR))) {
+for await (const file of glob.scan(resolve(config.api_dir))) {
     let [_, url, method] = [undefined, '', 'get'];
     const group = path.normalize(path.parse(path.normalize(file)).dir).replaceAll(path.sep, '/');
     app.group(group.replaceAll(".", ""), (app) => {
@@ -161,7 +164,7 @@ for await (const file of glob.scan(resolve(config.API_DIR))) {
         }
         const finalUrl = urlRewrite(url, method,);
         app[method]?.(finalUrl, async (req) => {
-            let res = Bun.file(resolve(path.join(config.API_DIR, file)));
+            let res = Bun.file(resolve(path.join(config.api_dir, file)));
             logger.debug(JSON.stringify(pick(req, ['cookie', 'user-agent', 'headers', 'body', 'route', 'query', 'content-type'])));
             switch (path.extname(file)) {
                 case ".json":
@@ -174,7 +177,7 @@ for await (const file of glob.scan(resolve(config.API_DIR))) {
             index: ++apiLength,
             url: path.normalize(path.join(group, finalUrl || '/')).replaceAll(path.sep, '/'),
             method,
-            file: path.normalize(path.relative(resolve(), resolve(path.join(config.API_DIR, file))))
+            file: path.normalize(path.relative(resolve(), resolve(path.join(config.api_dir, file))))
         }, {
             color: method
         });
@@ -182,16 +185,16 @@ for await (const file of glob.scan(resolve(config.API_DIR))) {
     });
 }
 //    logger.info(process.argv.shift())
-config.WATCH && fs.watch(path.resolve(config.API_DIR,), async (event, filename) => {
-    logger.warning(`${config.API_DIR} has already changed,I Will Restart,Please wait a moment!!`);
+config.watch && fs.watch(path.resolve(config.api_dir), async (event, filename) => {
+    logger.warning(`${config.api_dir} has already changed,I Will Restart,Please wait a moment!!`);
     restart();
 });
 // 静态资源信息处理
 await safeRun(() => {
     // @ts-ignore
     return app.use(staticPlugin({
-        prefix: `${config.STATIC_ROUTE_PREFIX}`, // prefix
-        assets: resolve(config.STATIC_DIR),
+        prefix: `${config.static_route_prefix}`, // prefix
+        assets: resolve(config.static_dir),
         indexHTML: true,
         noCache: true,
         alwaysStatic: false // 文件动态获取信息
@@ -201,35 +204,35 @@ await safeRun(() => {
 {
     plugins.map((plugin) => {
         try {
-            plugin.execute({app, logger, config});
+            plugin.execute({app, logger, config, option: plugin.option});
         } catch (err) {
+            /*@ts-ignore*/
             logger.error(`Load plugin ${chalk.redBright.bold(plugin.name)} error: ${err.message}`);
         }
     });
     logger.debug(`Loaded ${plugins.length} Plugin`);
 }
 // 监听
-app
-    .use(midLogger({
-        logIP: false,
-        writer: {
-            write(msg: string) {
-                logger.debug(msg);
-            }
+app.use(midLogger({
+    logIP: false,
+    writer: {
+        write(msg: string) {
+            logger.debug(msg);
         }
-    }))
-    .listen(~~config.PORT);
+    }
+}))
+    .listen(~~config.port);
 // 欢迎信息
 // @ts-ignore
 logger.info(`
 > Hi,I'm SimpleMockServer, 
 · Now dir configuration: 
 | Root: ${chalk.white.bold(resolve(""))}  
-| API_DIR: ${chalk.white.bold(resolve(config.API_DIR))}
-| STATIC_DIR: ${chalk.white.bold(resolve(config.STATIC_DIR))}
+| api_dir: ${chalk.white.bold(resolve(config.api_dir))}
+| static_dir: ${chalk.white.bold(resolve(config.static_dir))}
 · Now Server: 
-| ServerApi: running on http://localhost:${config.PORT}
-| StaticFile: running on http://localhost:${config.PORT}/${config.STATIC_ROUTE_PREFIX}
+| ServerApi: running on http://localhost:${config.port}
+| StaticFile: running on http://localhost:${config.port}/${config.static_route_prefix}
 · Tips: 
 | Restart: Press key ${chalk.redBright.bold('R')}
 | Exit: Press key ${chalk.redBright.bold('Q')}

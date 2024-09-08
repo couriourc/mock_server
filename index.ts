@@ -107,13 +107,13 @@ const logger = new Logger({
                 logger.error("Manifest need main field!");
             }
             const main = await import( path.resolve(path.dirname(path.resolve(resolvedPluginPath, file)), plugin.main));
-            const enabled = parsedConfig.plugins?.[plugin.name]?.enabled ?? true;
+            const enabled = parsedConfig?.plugins?.[plugin.name]?.enabled ?? true;
             if (!enabled) continue;
             if (typeof main.default === "function") {
                 plugins.push({
                     name: plugin.name,
                     execute: main.default,
-                    option: parsedConfig.plugins?.[plugin.name] ?? {}
+                    option: parsedConfig?.plugins?.[plugin.name] ?? {}
                 });
             }
         }

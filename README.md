@@ -28,16 +28,37 @@
 
 ## 例如
 
+
+
 ```txt
-└─apis
-    └─demo
-        │  index.get.json -> api为 demo/ get 方法
-        │  index.json 会被 index.get.json  覆盖
-        │  index.post.json
-        │  querybyentity.json -> api为 demo/querybyentity/ get 方法
-        │
-        └─index
-                test.json ->  api为 demo/index/test get 方法
+PS D:\projects\mock_server> tree .\example\ /f
+│  .simple-mock.yaml
+│  [SimpleMockServer] your download application
+├─apis
+│  └─api
+│      │  index.delete.json
+│      │  index.get.json
+│      │  index.json
+│      │  index.option.json
+│      │  index.patch.json
+│      │  index.post.json
+│      │  querybyentity.json
+│      │
+│      └─index
+│              test.json
+│
+├─plugins
+│  └─peer-stream
+│      │  index.js
+│      │  package.json
+│      │  pnpm-lock.yaml
+│      └─node_modules
+└─static
+        bootstrap.min.css
+        index.html
+        jquery.min.js
+        normalize.css
+
 ```
 
 ## 基本功能

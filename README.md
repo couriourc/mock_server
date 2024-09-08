@@ -1,7 +1,7 @@
 ## SimpleMockServer
 
 <p align="center">
-  <a href="https://ruffle.rs"><img src="./docs/logo.jpg" style="margin: 0 auto;border-radius: 20px;"/></a>
+  <a href="https://github.com/couriourc/mock_server"><img src="./docs/logo.jpg" style="margin: 0 auto;border-radius: 20px;"/></a>
 </p>
 <p align="center">
   <br />

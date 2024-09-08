@@ -1,0 +1,21 @@
+name: Builder
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+        run: bun install --frozen-lockfile && bun run build:all
+      - name: Upload binaries to release
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: dist/**
+        overwrite: true
+        tags: true
+        tag: ${{ github.ref }}

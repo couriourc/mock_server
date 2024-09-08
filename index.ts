@@ -259,7 +259,7 @@ readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 // 监听事件
 process.stdin.on('keypress', (str) => {
-    str = str.toLowerCase();
+    str = str?.toLowerCase?.();
     switch (str) {
         //按r重启
         case 'r':

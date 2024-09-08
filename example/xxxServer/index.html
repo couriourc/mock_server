@@ -11,28 +11,50 @@
 	<script src="./jquery.min.js"></script>
 	<script>
 		const result = [];
-		const $preview = $("#preview");
-		const reset = () => $preview.html('') ;
-		const loading = ()=> $preview.html(`
+		const $preview = $('#preview');
+		const reset = () => update('');
+		const update = (html) => document.getElementById('preview').innerHTML = html;
+		const loading = () => update(`
 <div class="spinner-border" role="status">
   <span class="visually-hidden">Loading...</span>
 </div>
-		`)
+		`);
+		const method = (method, clz) => `<span class="badge text-bg-secondary ${clz}">${method}</span>`;
+
 		function getInfo() {
+			loading();
 			fetch('/api/').then(d => d.json()).then((d) => {
 				reset();
-				result.forEach();
+				result.push(d);
+				update(result.map((d) => {
+					return `<li class="list-group-item">${method('GET', 'text-bg-primary')} ${JSON.stringify(
+							d)}</li>`;
+				}).join(''));
 			});
+
+			fetch('/api/', {
+				method : 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body   : JSON.stringify({'schema': 'QueryExample'}),
+			}).then(d => d.json()).then((d) => {
+				reset();
+				result.push(d);
+				update(result.map((d) => {
+					return `<li class="list-group-item">${method('POST', 'text-bg-success')}${JSON.stringify(
+							d)}</li>`;
+				}).join(''));
+			});
+
 		}
 	</script>
 
 </head>
 <body class="container center-block">
-<div class="text-warning" role="alert">
-	点击按钮获取信息
-</div>
-<ul id="preview" class="list-group list-group-numbered">
-</ul>
-<button class="btn btn-primary" onclick="getInfo()">获取信息</button>
+<h1>Mock Test</h1>
+<ul id="preview" class="list-group pre-scrollable  list-group-numbered"></ul>
+<button class="btn btn-primary" onclick="getInfo()">Tap to Req
+</button>
 </body>
 </html>

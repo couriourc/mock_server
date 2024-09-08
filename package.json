@@ -11,12 +11,12 @@
     "chalk": "^5.3.0"
   },
   "scripts": {
-    "build:win-x64": "bun build --minify --compile --target=bun-windows-x64 index.ts --outfile dist/SimpleMockServer",
-    "build:linux-x64": "bun build --minify --compile --target=bun-linux-x64 index.ts --outfile dist/SimpleMockServer",
-    "build:linux-x64-baseline": "bun build --minify --compile --target=bun-linux-x64-baseline index.ts --outfile dist/SimpleMockServer",
-    "build:linux-arm64": "bun build --minify --compile --target=bun-linux-x64-arm64 index.ts --outfile dist/SimpleMockServer",
-    "build:darwin-arm64": "bun build --minify --compile --target=bun-darwin-arm64 index.ts --outfile dist/SimpleMockServer",
-    "build:darwin-x64": "bun build --minify --compile --target=bun-darwin-x64 index.ts --outfile dist/SimpleMockServer",
+    "build:win-x64": "bun build --minify --compile --target=bun-windows-x64 index.ts --outfile dist/SimpleMockServer-windows-x64",
+    "build:linux-x64": "bun build --minify --compile --target=bun-linux-x64 index.ts --outfile dist/SimpleMockServer-linux-x64",
+    "build:linux-x64-baseline": "bun build --minify --compile --target=bun-linux-x64-baseline index.ts --outfile dist/SimpleMockServer-linux-x64-baseline",
+    "build:linux-arm64": "bun build --minify --compile --target=bun-linux-x64-arm64 index.ts --outfile dist/SimpleMockServer-linux-x64-arm64",
+    "build:darwin-arm64": "bun build --minify --compile --target=bun-darwin-arm64 index.ts --outfile dist/SimpleMockServer-darwin-arm64z",
+    "build:darwin-x64": "bun build --minify --compile --target=bun-darwin-x64 index.ts --outfile dist/SimpleMockServer-darwin-x64",
     "build:all": "bun run build:win-x64 && bun run build:linux-x64 && bun run build:linux-x64-baseline && bun run build:linux-arm64 && bun run build:darwin-arm64 && bun run build:darwin-x64",
     "build": "cross-env NODE_ENV=production bun run build:win-x64",
     "dev": "cross-env NODE_ENV=development bun --watch run index.ts",

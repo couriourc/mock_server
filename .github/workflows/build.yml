@@ -15,8 +15,9 @@ jobs:
           run: bun install --frozen-lockfile && bun run build:all
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: dist/*
-        overwrite: true
-        tags: true
-        tag: ${{ github.ref }}
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/*
+          overwrite: true
+          tags: true
+          tag: ${{ github.ref }}

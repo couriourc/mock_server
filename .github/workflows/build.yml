@@ -25,11 +25,11 @@ jobs:
       - name: Debug
         run: |
           ls -a dist
-      # - name: Upload binaries to release
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: dist/*
-      #     overwrite: true
-      #     tags: true
-      #     tag: ${{ github.ref }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/SimpleMockServer.exe
+          overwrite: true
+          tags: true
+          tag: ${{ github.ref }}

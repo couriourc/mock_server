@@ -28,8 +28,6 @@
 
 ## 例如
 
-
-
 ```txt
 PS D:\projects\mock_server> tree .\example\ /f
 │  .simple-mock.yaml
@@ -95,8 +93,6 @@ PS D:\projects\mock_server> tree .\example\ /f
 
 ![alt text](docs/randomify.png)
 
-## 配置文件 .simple-mock
+## 配置文件 .simple-mock.yaml
 
-API_DIR=apis // api 目录放在哪儿，必须要有子目录
-PORT=3000 // 端口号
-LOG_SIZE=10M // 日志记录大小
+[WIP],还在写

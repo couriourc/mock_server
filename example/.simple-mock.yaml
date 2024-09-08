@@ -1,7 +1,7 @@
 root_dir: .
 api_dir: apis
-static_dir: ./static
-static_route_prefix: static
+static_dir: ./
+static_route_prefix: /
 port: 3000
 silent:
 error_log_file_path: ./error.log

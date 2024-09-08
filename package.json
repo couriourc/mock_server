@@ -1,7 +1,14 @@
 {
-  "name": "mock_server",
+  "name": "@couriourc/simple-mock",
+  "version": "0.0.1",
   "module": "index.ts",
   "type": "module",
+  "keywords": [
+    "bun",
+    "elysiajs",
+    "mockjs",
+    "mustache"
+  ],
   "devDependencies": {
     "@types/bun": "latest",
     "@types/dotenv": "^8.2.0",
@@ -10,6 +17,12 @@
     "@types/underscore": "^1.11.15",
     "chalk": "^5.3.0"
   },
+  "bin": {
+    "sm": "./dist/SimpleMockServer-windows-x64.exe"
+  },
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "build:win-x64": "bun build --minify --compile --target=bun-windows-x64 index.ts --outfile dist/SimpleMockServer-windows-x64",
     "build:linux-x64": "bun build --minify --compile --target=bun-linux-x64 index.ts --outfile dist/SimpleMockServer-linux-x64",

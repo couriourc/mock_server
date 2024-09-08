@@ -11,7 +11,6 @@
 	<script src="./jquery.min.js"></script>
 	<script>
 		function getInfo() {
-
 			fetch('/api/').then(d => d.json()).then((d) => {
 				document.getElementById('preview').innerHTML +=
 						`<li class="list-group-item">${JSON.stringify(d)}</li>`;

@@ -53,7 +53,7 @@ const parsedConfig = yaml.parse<IConfigParameter>(await safeRun(() => {
 // S 相关配置
 const choice = (cmd: any, parsed: any, defaultConfig: any) => {
     return cmd ??
-    _.isNull(parsed) ?
+    (_.isUndefined(parsed) || _.isNull(parsed)) ?
         defaultConfig :
         parsed;
 };

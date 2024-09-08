@@ -10,10 +10,18 @@
 	<link rel="stylesheet" href="./bootstrap.min.css"/>
 	<script src="./jquery.min.js"></script>
 	<script>
+		const result = [];
+		const $preview = $("#preview");
+		const reset = () => $preview.html('') ;
+		const loading = ()=> $preview.html(`
+<div class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+		`)
 		function getInfo() {
 			fetch('/api/').then(d => d.json()).then((d) => {
-				document.getElementById('preview').innerHTML +=
-						`<li class="list-group-item">${JSON.stringify(d)}</li>`;
+				reset();
+				result.forEach();
 			});
 		}
 	</script>

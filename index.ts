@@ -165,7 +165,6 @@ for await (const file of glob.scan(resolve(config.api_dir))) {
         const finalUrl = urlRewrite(url, method,);
         app[method]?.(finalUrl, async (req) => {
             let res = Bun.file(resolve(path.join(config.api_dir, file)));
-            console.log(req)
             logger.debug(JSON.stringify(pick(req, ['cookie', 'user-agent', 'headers', 'body', 'route', 'query', 'content-type'])));
             switch (path.extname(file)) {
                 case ".json":

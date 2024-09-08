@@ -1,20 +1,32 @@
 name: Builder
 on:
+  workflow_dispatch:
   push:
     # Sequence of patterns matched against refs/tags
     branches:
       - master
 jobs:
   build:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-
-      - name: Build
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - name: setup node
         uses: oven-sh/setup-bun@v2
-        run: bun install --frozen-lockfile && bun run build:all
         with:
           bun-version: latest
+
+      - name: Build
+        run: |
+          bun install --frozen-lockfile 
+          bun run build:all
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2

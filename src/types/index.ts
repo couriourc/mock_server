@@ -9,4 +9,5 @@ export interface IConfigParameter {
     API_DIR: string;
     STATIC_DIR: string;
     STATIC_ROUTE_PREFIX: string;
+    PLUGIN_DIR: string;
 }

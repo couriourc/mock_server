@@ -33,6 +33,7 @@ program.option('-d, --debug', 'output extra debugging')
     .option('-f , --static-dir <static-dir>', 'static dir')
     .option('-el , --error-log <error-log>', 'error log file path')
     .option('-dl , --debug-log <debug-log>', 'debug log file path')
+    .option('-pl , --plugin-dir <plugin-dir>', 'plugin-dir file path')
     .option('-c , --config <config-file>', 'config file path')
 ;
 const command = program.parse(process.argv);
@@ -74,7 +75,10 @@ const resolve = (p?: string) => path.resolve(cwd(config.ROOT_DIR), p ?? '');
 }
 
 // S 打印日志配置
-
+const plugins: ({
+    name: string;
+    execute: Function;
+}) [] = [];
 const logger = new Logger({
     sponsor: !config.SILENT,
     info: !config.SILENT,
@@ -84,6 +88,28 @@ const logger = new Logger({
         encoding: "utf8",
     },
 });
+
+
+{
+    // 加载插件
+    const glob = new Glob("*/package.json");
+    const resolvedPluginPath = resolve(config.PLUGIN_DIR);
+    if (fs.existsSync(resolvedPluginPath)) {
+        for await (const file of glob.scan(resolvedPluginPath)) {
+            const plugin = await import(path.join(resolvedPluginPath, file));
+            if (!plugin.main) {
+                logger.error("Manifest need main field!");
+            }
+            const main = await import( path.resolve(path.dirname(path.resolve(resolvedPluginPath, file)), plugin.main));
+            if (typeof main.default === "function") {
+                plugins.push({
+                    name: plugin.name ?? file,
+                    execute: main.default,
+                });
+            }
+        }
+    }
+}
 // 遍历路径信息
 const glob = new Glob("./**/*.*");
 // 启动服务
@@ -165,6 +191,17 @@ await safeRun(() => {
         alwaysStatic: false // 文件动态获取信息
     }));
 });
+// 加载插件
+{
+    plugins.map((plugin) => {
+        try {
+            plugin.execute({app, logger, config});
+        } catch (err) {
+            logger.error(`Load plugin ${chalk.redBright.bold(plugin.name)} error: ${err.message}`);
+        }
+    });
+    logger.debug(`Loaded ${plugins.length} Plugin`);
+}
 // 监听
 app
     .use(midLogger({

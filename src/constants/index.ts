@@ -14,5 +14,6 @@ export const DEFAULT_CONFIG: IConfigParameter = {
     LOG_SIZE: "10M",
     DEBUG_LOG_FILE_PATH: "./debug.log",
     WATCH: false,
+    PLUGIN_DIR: "./plugins",
 };
 

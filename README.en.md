@@ -1,45 +1,32 @@
 ## SimpleMockServer
 
 <p align="center">
-  <a href="https://ruffle.rs"><img src="./docs/logo.jpg" style="margin: 0 auto;border-radius: 20px;"/></a>
+  <a href="https://github.com/couriourc/mock_server"><img src="./docs/logo.jpg" style="margin: 0 auto;border-radius: 20px;"/></a>
 </p>
 <p align="center">
   <br />
   <strong>
-    <a href="./example">Demo</a> |
+    <a href="./example">demo</a> |
     <a href="https://github.com/couriourc/mock_server/releases">nightly builds</a> | 
     <a href="https://github.com/couriourc/mock_server/example">Example</a> | 
     <a href="https://github.com/couriourc/mock_server/wiki">wiki</a>
   </strong>
 </p>
 
-## Introduction
+> 让 mock 更简单
 
-There is a most simple mock server use file organization, just drag your file, and rm your filename,and u got a
-server;
+## Why
 
-## Direct use
+是否还在为前端部署头疼，是否还在为部署静态服务烦恼，是否还在嫌弃 Mock
+数据流程麻烦，对我而言，大多数情况，都不喜欢必须把静态数据进行强制集成到项目中，对于很多老项目也没法做这个事儿，不如试试目录式模拟，拖入到对应的文件，然后启动应用，就可以完成这个操蛋的事情。
 
-[Download the bin version ->](https://github.com/couriourc/mock_server/releases/tag/release)
+## 使用说明
 
-startup your download application,and it will auto create directories named `static`,`apis`, and then will start a
-server,
-Place the folder that requires Mock in the apis directory, and then start the service, where the api rule is, the
-directory determines the prefix,`[api_suffix]. [api_method]
-.json`, where api_suffix represents the api path, api_method represents the interception method, and
-supports `get| post| patch| head| delete| option| put`
-, this is just to keep the results consistent. Index.json is automatically intercepted here as`/`.
+将需要 Mock 的文件夹放置在 apis 目录下，然后启动服务，其中 api 规则为，目录决定前缀，[api_suffix].[api_method]
+.json,其中，api_suffix 表示 api 路径，api_method,表示拦截的方法，支持 `get|post|patch|head|delete|option|put`
+，这个只是为了保持结果一致，这里自动拦截了 index.json 为 /。
 
-## Features
-
-- Returns static JSON data
-- Returns based on interface information
-- Generated based on the Mock template, see http://mockjs.com/examples.html
-  Here, a {{}} writing similar to Vue is supported, and the replaced result is converted using Mockjs, which means that
-  random data is generated through json. We provided the 'cookie', 'user-agent', 'headers', 'body', 'route', 'query', '
-  content-type',just like {{headers.contentType}} or {{query.key1}}
-
-## Example
+## 例如
 
 ```txt
 PS D:\projects\mock_server> tree .\example\ /f
@@ -72,34 +59,40 @@ PS D:\projects\mock_server> tree .\example\ /f
 
 ```
 
-```txt
-┌───────┬───────────────────┬────────┬─────────────────────────────┐
-│ index │ url               │ method │ file                        │
-├───────┼───────────────────┼────────┼─────────────────────────────┤
-│     1 │ api/              │ delete │ apis\api\index.delete.json  │
-│     2 │ api/              │ get    │ apis\api\index.get.json     │
-│     3 │ api/              │ get    │ apis\api\index.json         │
-│     4 │ api/              │ option │ apis\api\index.option.json  │
-│     5 │ api/              │ patch  │ apis\api\index.patch.json   │
-│     6 │ api/              │ post   │ apis\api\index.post.json    │
-│     7 │ api/querybyentity │ get    │ apis\api\querybyentity.json │
-│     8 │ api/index/test    │ get    │ apis\api\index\test.json    │
-└───────┴───────────────────┴────────┴─────────────────────────────┘
+## 基本功能
+
+- 返回静态JSON数据
+- 根据接口信息返回
+- 根据 Mock 模板生成，见  http://mockjs.com/examples.html
+
+这里支持类似 Vue 的 {{}} 写法，并对，替换后的结果采用 Mockjs 来转换，也就是支持通过 json 生成随机数据。
+
+文件内容为：
+
+```json
+{
+  "result": "{{body.schema}}"
+}
 ```
 
-and you can fetch `/api` to access content of `apis\api\index.delete.json`
+![alt text](docs/image.png)
 
-## Plugins
+以及 http://mockjs.com/examples.html，
 
-We also offer a plugin system to extend it, I am writing wiki
+```json
+{
+  "list|1-10": [
+    {
+      "id|+1": 1
+    }
+  ]
+}
+```
 
-## Configuration
+随机生成如下
 
-Please see [ source code ](https://github.com/couriourc/mock_server),[WIP]
+![alt text](docs/randomify.png)
 
-## Check list
+## 配置文件 .simple-mock.yaml
 
-- [ x ] Plugin Loaded
-- [ x ] Support Static HTML to deploy
-- [ x ] Mock JSON by filename
-- [ ] WIKI
+[WIP],还在写

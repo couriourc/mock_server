@@ -10,6 +10,7 @@
     "mustache"
   ],
   "devDependencies": {
+    "@happy-dom/global-registrator": "^15.7.3",
     "@types/bun": "latest",
     "@types/dotenv": "^8.2.0",
     "@types/mustache": "^4.2.5",

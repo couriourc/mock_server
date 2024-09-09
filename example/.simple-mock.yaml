@@ -13,7 +13,6 @@ plugins:
     path: /swagger
     documentation:
       title: "Test"
-
 rewrites:
   - path: ''
     test: ^(index)$ # rewrite index for ''

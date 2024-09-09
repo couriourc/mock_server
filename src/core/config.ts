@@ -40,8 +40,8 @@ export const cwd = (...p: string[]) => path.resolve(command.getOptionValue('cwd'
 const parsedConfig = yaml.parse<IConfigParameter>(await safeRun(() => {
         const configFilePath = cwd(DEFAULT_CONFIG.root_dir, configFile);
         if (!fs.existsSync(configFilePath)) {
+            console.warn(`Not Found config file,Create ${configFilePath}`);
             fs.writeFileSync(configFilePath, DEFAULT_MOCK_YAML_CONFIG);
-            return '';
         }
         return fs.readFileSync(configFilePath).toString();
     },

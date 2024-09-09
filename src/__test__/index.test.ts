@@ -1,6 +1,5 @@
 // test/index.test.ts
 import {describe, expect, it} from 'bun:test';
-import Elysia from "elysia";
 
 const baseURL = `http://localhost:3000/`;
 describe('Elysia', () => {

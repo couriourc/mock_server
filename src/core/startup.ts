@@ -32,9 +32,9 @@ export async function startup(config, cwd) {
     const glob = new Glob("./**/*.*");
     // 启动服务
     const app = new Elysia();
-    const rewrites = config.rewrites.map(({path, test}) => {
+    const rewrites = config?.rewrites?.map(({path, test}) => {
         return [new RegExp(test), path];
-    }) as [[RegExp, string]];
+    }) as [[RegExp, string]] ?? [];
 
     const urlRewrite = (url: string, method: string) => {
         for (let [reg, final] of rewrites) {

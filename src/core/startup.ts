@@ -1,6 +1,5 @@
 import path from "path";
 import fs from "fs";
-import Logger from "@ptkdev/logger";
 import {Glob} from "bun";
 import Elysia from "elysia";
 import {Table} from "console-table-printer";
@@ -16,7 +15,7 @@ import process from "process";
 import readline from "readline";
 //@ts-ignore
 import {logger as midLogger} from '@grotto/logysia';
-import {getPlugins, initPlugins} from "./plugin-handler.ts";
+import {initPlugins} from "./plugin-handler.ts";
 import {checkAndInit} from "./config.ts";
 import {getLogger} from "../utils/logger.ts";
 
@@ -27,15 +26,15 @@ export async function startup(config, cwd) {
 
     // E 相关配置
     checkAndInit({resolve, config});
-    const plugins = await initPlugins({cwd, config, resolve, logger});
+    const plugins = await initPlugins({config, resolve, logger});
     // S 打印日志配置
     // 遍历路径信息
     const glob = new Glob("./**/*.*");
     // 启动服务
     const app = new Elysia();
-    const rewrites = [
-        [/^index$/, ''],
-    ] as [[RegExp, string]];
+    const rewrites = config.rewrites.map(({path, test}) => {
+        return [new RegExp(test), path];
+    }) as [[RegExp, string]];
 
     const urlRewrite = (url: string, method: string) => {
         for (let [reg, final] of rewrites) {
@@ -65,17 +64,25 @@ export async function startup(config, cwd) {
     for await (const file of glob.scan(resolve(config.api_dir))) {
         let [_, url, method] = [undefined, '', 'get'];
         const group = path.normalize(path.parse(path.normalize(file)).dir).replaceAll(path.sep, '/');
+        const regBackets = /\[([^}]*)\]/g;
+
+        const transformFile = (value: string) =>
+            regBackets.test(value) ? value.replace(regBackets, (_, s) => `:${s}`) : value;
+        const transformedFile = transformFile(path.basename(file));
+        const withMethodParams = /(.*)\.(get|post|patch|head|delete|option|put)\.(.*)$/.exec(transformedFile);
+
+        if (withMethodParams) {
+            [_, url, method] = withMethodParams;
+        } else {
+            const route = transformedFile.split('.');
+            url = route.slice(0, route.length - 1).join('/');
+        }
+
         app.group(group.replaceAll(".", ""), (app) => {
-            const withMethodParams = /(.*)\.(get|post|patch|head|delete|option|put)\.(.*)$/.exec(path.basename(file));
-            if (withMethodParams) {
-                [_, url, method] = withMethodParams;
-            } else {
-                url = path.basename(file).split('.')[0];
-            }
             const finalUrl = urlRewrite(url, method,);
             app[method]?.(finalUrl, async (req) => {
                 let res = Bun.file(resolve(path.join(config.api_dir, file)));
-                logger.debug(JSON.stringify(pick(req, ['cookie', 'user-agent', 'headers', 'body', 'route', 'query', 'content-type'])));
+                logger.debug(JSON.stringify(pick(req, ['cookie', 'user-agent', 'headers', "params", 'body', 'route', 'query', 'content-type'])));
                 switch (path.extname(file)) {
                     case ".json":
                         return safeRun(async () => Mock.mock(JSON.parse(Mustache.render(JSON.stringify(await res.json()) as string, req))), Promise.resolve(res));

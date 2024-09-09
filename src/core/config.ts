@@ -39,7 +39,6 @@ export const cwd = (...p: string[]) => path.resolve(command.getOptionValue('cwd'
 // E 配置启动命令信息
 const parsedConfig = yaml.parse<IConfigParameter>(await safeRun(() => {
         const configFilePath = cwd(DEFAULT_CONFIG.root_dir, configFile);
-
         if (!fs.existsSync(configFilePath)) {
             fs.writeFileSync(configFilePath, DEFAULT_MOCK_YAML_CONFIG);
             return '';
@@ -65,4 +64,5 @@ export const config = mergeDeep(DEFAULT_CONFIG, {
     static_dir: choice(command.getOptionValue("static-dir"), parsedConfig?.static_dir, DEFAULT_CONFIG.static_dir),
     static_route_prefix: choice(command.getOptionValue("static-route-prefix"), parsedConfig?.static_route_prefix, DEFAULT_CONFIG.static_route_prefix),
     plugins: parsedConfig?.plugins ?? {},
+    rewrites: parsedConfig?.rewrites ?? {}
 } as Partial<IConfigParameter>);

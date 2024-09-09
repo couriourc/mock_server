@@ -1,5 +1,8 @@
 import {swagger} from '@elysiajs/swagger';
 
-export default function ({app}) {
-    app.use(swagger);
+export default function ({app, option}) {
+    console.log(option);
+    app.use(swagger({
+        ...(option ?? {}),
+    }));
 }

@@ -31,4 +31,8 @@ debug_log_file_path: ./debug.log
 watch:
 plugins:
   swagger:
+rewrites:
+  - path: ''
+    test: ^(index)$
 `
+

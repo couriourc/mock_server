@@ -1,4 +1,3 @@
-
 root_dir: .
 api_dir: apis
 static_dir: static
@@ -11,3 +10,10 @@ debug_log_file_path: ./debug.log
 watch:
 plugins:
   swagger:
+    path: /swagger
+    documentation:
+      title: "Test"
+
+rewrites:
+  - path: ''
+    test: ^(index)$ # rewrite index for ''

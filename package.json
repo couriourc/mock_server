@@ -1,6 +1,6 @@
 {
   "name": "@couriourc/simple-mock",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "module": "index.ts",
   "type": "module",
   "keywords": [
@@ -42,6 +42,7 @@
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
     "@elysiajs/static": "^1.1.1",
+    "@elysiajs/swagger": "^1.1.1",
     "@grotto/logysia": "^0.1.4",
     "@ptkdev/logger": "^1.8.0",
     "@types/mockjs": "^1.0.10",
@@ -53,6 +54,7 @@
     "elysia": "^1.1.12",
     "mockjs": "^1.1.0",
     "mustache": "^4.2.0",
+    "swagger": "link:@elysiajs\\swagger",
     "underscore": "^1.13.7",
     "yaml": "^2.5.1"
   }

@@ -1,6 +1,7 @@
+
 root_dir: .
 api_dir: apis
-static_dir: ./
+static_dir: static
 static_route_prefix: /
 port: 3000
 silent:
@@ -9,8 +10,4 @@ log_size: 10M
 debug_log_file_path: ./debug.log
 watch:
 plugins:
-  peer-stream:
-    enabled: true
-    options:
-      peerId: 'peer-stream-id'
-      secretKey: 'peer-stream-secret-key'
+  swagger:

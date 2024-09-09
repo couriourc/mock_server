@@ -6,7 +6,6 @@ function initUEe5Pool() {
 
 }
 export default function({app, logger, option}) {
-  logger.info(JSON.stringify(config));
   app.ws('/ws', {
     message(ws, message) {
       logger.info(option);

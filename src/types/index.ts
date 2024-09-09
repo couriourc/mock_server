@@ -10,4 +10,5 @@ export interface IConfigParameter {
     static_dir: string;
     static_route_prefix: string;
     plugin_dir: string;
+    plugins: Record<string, any>;
 }

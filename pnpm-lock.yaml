@@ -10,13 +10,16 @@ importers:
     dependencies:
       '@elysiajs/cors':
         specifier: ^1.1.1
-        version: 1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))
+        version: 1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4))
       '@elysiajs/static':
         specifier: ^1.1.1
-        version: 1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))
+        version: 1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4))
+      '@elysiajs/swagger':
+        specifier: ^1.1.1
+        version: 1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4))
       '@grotto/logysia':
         specifier: ^0.1.4
-        version: 0.1.4(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))(typescript@5.5.4)
+        version: 0.1.4(elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4))(typescript@5.5.4)
       '@ptkdev/logger':
         specifier: ^1.8.0
         version: 1.8.0
@@ -40,13 +43,16 @@ importers:
         version: 16.4.5
       elysia:
         specifier: ^1.1.12
-        version: 1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4)
+        version: 1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4)
       mockjs:
         specifier: ^1.1.0
         version: 1.1.0
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
+      swagger:
+        specifier: link:@elysiajs\swagger
+        version: link:@elysiajs/swagger
       typescript:
         specifier: ^5.0.0
         version: 5.5.4
@@ -85,6 +91,11 @@ packages:
 
   '@elysiajs/static@1.1.1':
     resolution: {integrity: sha512-H1KqsuNHhHKYKUkPoies0pPQBgbA4qsfre840FKraeF99jz++2P/igrOagp8cWqwFGrHP1V+nwGlGm9U6rZAEg==}
+    peerDependencies:
+      elysia: '>= 1.1.0'
+
+  '@elysiajs/swagger@1.1.1':
+    resolution: {integrity: sha512-fsg5IZaNbgN2kWqSRUntSMqg386cmFbT7IrYm2gH1P9e34ZD2wuKhRCu521+T924UunwIHP2+tj6CoFL4FrsxQ==}
     peerDependencies:
       elysia: '>= 1.1.0'
 
@@ -231,6 +242,9 @@ packages:
   jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
 
+  lodash.clonedeep@4.5.0:
+    resolution: {integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==}
+
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
@@ -249,6 +263,9 @@ packages:
   node-cache@5.1.2:
     resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
     engines: {node: '>= 8.0.0'}
+
+  openapi-types@12.1.3:
+    resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
 
   path-key@3.1.1:
     resolution: {integrity: sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==}
@@ -317,18 +334,24 @@ packages:
 
 snapshots:
 
-  '@elysiajs/cors@1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))':
+  '@elysiajs/cors@1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4))':
     dependencies:
-      elysia: 1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4)
+      elysia: 1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4)
 
-  '@elysiajs/static@1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))':
+  '@elysiajs/static@1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4))':
     dependencies:
-      elysia: 1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4)
+      elysia: 1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4)
       node-cache: 5.1.2
 
-  '@grotto/logysia@0.1.4(elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4))(typescript@5.5.4)':
+  '@elysiajs/swagger@1.1.1(elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4))':
     dependencies:
-      elysia: 1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4)
+      elysia: 1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4)
+      lodash.clonedeep: 4.5.0
+      openapi-types: 12.1.3
+
+  '@grotto/logysia@0.1.4(elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4))(typescript@5.5.4)':
+    dependencies:
+      elysia: 1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4)
       picocolors: 1.1.0
       typescript: 5.5.4
 
@@ -427,12 +450,13 @@ snapshots:
 
   dotenv@16.4.5: {}
 
-  elysia@1.1.12(@sinclair/typebox@0.33.9)(typescript@5.5.4):
+  elysia@1.1.12(@sinclair/typebox@0.33.9)(openapi-types@12.1.3)(typescript@5.5.4):
     dependencies:
       '@sinclair/typebox': 0.33.9
       cookie: 0.6.0
       fast-decode-uri-component: 1.0.1
     optionalDependencies:
+      openapi-types: 12.1.3
       typescript: 5.5.4
 
   fast-decode-uri-component@1.0.1: {}
@@ -457,6 +481,8 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
+  lodash.clonedeep@4.5.0: {}
+
   lodash@4.17.21: {}
 
   lowdb@1.0.0:
@@ -476,6 +502,8 @@ snapshots:
   node-cache@5.1.2:
     dependencies:
       clone: 2.1.2
+
+  openapi-types@12.1.3: {}
 
   path-key@3.1.1: {}
 

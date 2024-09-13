@@ -141,7 +141,7 @@ export async function startup(config, cwd) {
 // 监听
 
     app
-        .listen(3001 || ~~config.port);
+        .listen(~~config.port);
 // 欢迎信息
 // @ts-ignore
     logger.info(`

@@ -13,11 +13,10 @@ import chalk from "chalk";
 import cluster from "cluster";
 import process from "process";
 import readline from "readline";
-//@ts-ignore
-import {logger as midLogger} from '@grotto/logysia';
 import {initPlugins} from "./plugin-handler.ts";
 import {checkAndInit} from "./config.ts";
 import {getLogger} from "../utils/logger.ts";
+import normalizeUrl from 'normalize-url';
 
 export async function startup(config, cwd) {
     //
@@ -32,7 +31,8 @@ export async function startup(config, cwd) {
     const glob = new Glob("./**/*.*");
     // 启动服务
     const app = new Elysia();
-    const rewrites = config?.rewrites?.map(({path, test}) => {
+
+    const rewrites = config?.rewrites?.map?.(({path, test}) => {
         return [new RegExp(test), path];
     }) as [[RegExp, string]] ?? [];
 
@@ -85,7 +85,16 @@ export async function startup(config, cwd) {
                 logger.debug(JSON.stringify(pick(req, ['cookie', 'user-agent', 'headers', "params", 'body', 'route', 'query', 'content-type'])));
                 switch (path.extname(file)) {
                     case ".json":
-                        return safeRun(async () => Mock.mock(JSON.parse(Mustache.render(JSON.stringify(await res.json()) as string, req))), Promise.resolve(res));
+                        return safeRun(async () => Mock.mock(
+                            JSON.parse(
+                                Mustache.render(
+                                    JSON.stringify(await res.json()) as string,
+                                    {
+                                        ...req,
+                                        mock: Mock.Random
+                                    }
+                                )
+                            )), Promise.resolve(res));
                     default:
                         return res;
                 }
@@ -130,15 +139,9 @@ export async function startup(config, cwd) {
         logger.debug(`Loaded ${plugins.length} Plugin`);
     }
 // 监听
-    app.use(midLogger({
-        logIP: false,
-        writer: {
-            write(msg: string) {
-                logger.debug(msg);
-            }
-        }
-    }))
-        .listen(~~config.port);
+
+    app
+        .listen(3001 || ~~config.port);
 // 欢迎信息
 // @ts-ignore
     logger.info(`
@@ -148,8 +151,8 @@ export async function startup(config, cwd) {
 | api_dir: ${chalk.white.bold(resolve(config.api_dir))}
 | static_dir: ${chalk.white.bold(resolve(config.static_dir))}
 · Now Server: 
-| ServerApi: running on http://localhost:${config.port}
-| StaticFile: running on http://localhost:${config.port}/${config.static_route_prefix}
+| ServerApi: running on ${normalizeUrl(`http://localhost:${config.port}`)}
+| StaticFile: running on ${normalizeUrl(`http://localhost:${config.port}/${config.static_route_prefix}`)}
 · Tips: 
 | Restart: Press key ${chalk.redBright.bold('R')}
 | Exit: Press key ${chalk.redBright.bold('Q')}

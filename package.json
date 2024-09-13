@@ -55,6 +55,7 @@
     "elysia": "^1.1.12",
     "mockjs": "^1.1.0",
     "mustache": "^4.2.0",
+    "normalize-url": "^8.0.1",
     "underscore": "^1.13.7",
     "yaml": "^2.5.1"
   }

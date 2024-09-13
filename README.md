@@ -13,6 +13,15 @@
   </strong>
 </p>
 
+
+<div align="center">
+  
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/couriourc/mock_server/Builder?label=build&style=flat-square)
+[![Node version](https://img.shields.io/node/v/@couriourc/simple-mock.svg?style=flat)](https://www.npmjs.com/package/@couriourc/simple-mock)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/couriourc/simple-mock_server/issues)
+
+</div>
+
 ## Introduction
 
 There is a most simple mock server use file organization, just drag your file, and rm your filename,and u got a
@@ -103,3 +112,6 @@ Please see [ source code ](https://github.com/couriourc/mock_server),[WIP]
 - [ x ] Support Static HTML to deploy
 - [ x ] Mock JSON by filename
 - [ ] WIKI
+
+## Thank You!
+Help spread the Code Quality Love! ❤️

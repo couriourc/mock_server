@@ -101,6 +101,38 @@ and you can fetch `/api` to access content of `apis\api\index.delete.json`
 ## Plugins
 
 We also offer a plugin system to extend it, I am writing wiki
+### Swagger
+The Swagger plugin is pre-installed in the project and can be seen directly by visiting /swagger.
+![image](https://github.com/user-attachments/assets/9ca5ce8b-f113-4193-a991-28054d4341ff)
+
+>  ❤️ Many thanks to Elysia for the handy and nice ui . https://github.com/elysiajs/elysia-swagger
+
+### Cors
+Handles cross-domain issues and can give XHR direct access to Mock's APIs
+
+all of plugins can configuration by set field `plugins` of `.simple_mock.yaml` 
+
+```diff
+
+root_dir: .
+api_dir: apis
+static_dir: static
+static_route_prefix: /
+port: 3000
+silent:
+error_log_file_path: ./error.log
+log_size: 10M
+debug_log_file_path: ./debug.log
+watch:
++ plugins:
++  swagger:
++  cors: 
+  
+rewrites:
+  - path: ''
+    test: ^(index)$
+
+```
 
 ## Configuration
 
